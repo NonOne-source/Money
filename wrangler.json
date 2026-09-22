@@ -1,0 +1,24 @@
+{
+  "name": "world-empire-online",
+  "main": "worker.js",
+  "compatibility_date": "2025-06-01",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "GAME_ROOM",
+        "class_name": "EmpireRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "EmpireRoom"
+      ]
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

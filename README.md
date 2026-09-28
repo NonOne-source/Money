@@ -87,6 +87,6 @@ Das Ingame-Banking besitzt jetzt vermögensabhängige Spielkarten. Die Schwellen
 - ab 4.000 €: Platinum
 - ab 6.000 €: Centurion
 
-Die Karte zeigt den Spielernamen, ein automatisch berechnetes Ablaufdatum und ausschließlich eine zensierte, spielinterne Kartennummer. Beim Grundstückskauf öffnet sich vor dem eigentlichen Kauf eine World-Empire-Pay-Ansicht mit Karte, virtuellem Terminal und einer simulierten Face-ID-Bestätigung. Erst „Kauf abschließen“ sendet den vorhandenen servergeprüften Kaufzug. Es werden keine echten Zahlungsdaten verarbeitet.
+Die Karte zeigt den Spielernamen, ein automatisch berechnetes Ablaufdatum und ausschließlich eine zensierte, spielinterne Kartennummer. Beim Grundstückskauf öffnet sich vor dem eigentlichen Kauf eine World-Empire-Pay-Ansicht mit Karte und virtuellem Terminal. Der Spieler kann zwischen einer simulierten Face-ID-Bestätigung und „Karte durchziehen“ wählen; die zweite Variante nutzt einen Touch-Slider und funktioniert damit auch auf dem iPad. Erst „Kauf abschließen“ sendet den vorhandenen servergeprüften Kaufzug. Es werden keine echten Zahlungsdaten verarbeitet.
 
 Die neue Kartenansicht und der Zahlungsablauf sind sowohl im Entwicklungs-Source als auch in der Root-`worker.js` für das Cloudflare-Deployment enthalten.

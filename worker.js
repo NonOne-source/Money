@@ -4680,5 +4680,121 @@ lucide-react/dist/esm/lucide-react.mjs:
    * See the LICENSE file in the root directory of this source tree.
    *)
 */
+
+</script><style>
+/* WORLD_EMPIRE_PAYMENT_SHIM_V1 */
+.empire-payment-card{min-height:205px;display:flex;flex-direction:column;justify-content:space-between;isolation:isolate;box-shadow:inset 0 1px 0 #ffffff22,0 18px 45px #00000035}
+.empire-payment-card:after{content:"WORLD EMPIRE";position:absolute;right:-16px;bottom:24px;font-size:31px;font-weight:800;letter-spacing:-2px;opacity:.045;transform:rotate(-10deg);z-index:-1}
+.empire-payment-card.card-sparkasse{background:linear-gradient(145deg,#dc1020,#9f0712 68%,#74040c);border-color:#ff98a055}
+.empire-payment-card.card-green{background:linear-gradient(145deg,#1f5c48,#12392e 70%,#09251f);border-color:#a6dcc155}
+.empire-payment-card.card-gold{background:linear-gradient(145deg,#d3ad62,#8b672c 63%,#4d3819);border-color:#f8deb088;color:#fff9e8}
+.empire-payment-card.card-platinum{background:linear-gradient(145deg,#bdc4c8,#667078 57%,#343c43);border-color:#eef4f788;color:#fff}
+.empire-payment-card.card-centurion{background:radial-gradient(circle at 78% 20%,#ffffff15,transparent 30%),linear-gradient(145deg,#17191d,#050608 68%,#000);border-color:#888f9655;color:#f0f0ec}
+.we-card-brand{display:flex;align-items:center;justify-content:space-between;font-size:8px;letter-spacing:1.6px;font-weight:700}
+.we-card-chip{width:39px;height:29px;margin-top:18px;border-radius:7px;border:1px solid #fff8d966;background:linear-gradient(145deg,#d5bc73,#8e743b);box-shadow:inset 0 0 0 1px #30260f33}
+.we-card-number{margin-top:18px;font-family:Manrope,sans-serif;font-size:16px;letter-spacing:2px;white-space:nowrap}
+.we-card-meta{display:flex;justify-content:space-between;gap:16px;margin-top:18px}
+.we-card-meta span{display:flex;flex-direction:column;gap:3px;min-width:0}.we-card-meta small{font-size:5.5px;letter-spacing:1.1px;opacity:.64}.we-card-meta b{font-size:7.5px;letter-spacing:.6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empire-payment-card footer{border-top:1px solid #ffffff18;padding-top:10px;margin-top:15px}
+.we-pay-backdrop{position:fixed;inset:0;z-index:250;background:#02070db8;backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px}
+.we-pay-modal{width:min(420px,94vw);max-height:94vh;overflow:auto;border:1px solid #ffffff16;border-radius:24px;background:linear-gradient(160deg,#162432,#0b141d);box-shadow:0 30px 100px #000c;padding:22px;color:#dfe8ec}
+.we-pay-close{float:right;width:34px;height:34px;border-radius:50%;background:#ffffff0b;color:#cbd5da;font-size:20px}
+.we-pay-head{text-align:center;margin:10px 0 18px}.we-pay-head small{font-size:8px;letter-spacing:2px;color:#bca36b}.we-pay-head h2{margin:8px 0 5px;font-size:24px}.we-pay-head strong{font-size:28px;font-weight:500}
+.we-pay-terminal{margin-top:17px;background:linear-gradient(165deg,#29333a,#151c21);border:1px solid #ffffff12;border-radius:18px;padding:18px}
+.we-pay-screen{display:grid;place-items:center;height:52px;border-radius:8px;background:#a5c3a51c;border:1px solid #b6d4b72b;color:#b8d0bb;font-size:9px;letter-spacing:2px}
+.we-pay-slot{width:78%;height:8px;border-radius:8px;margin:19px auto 13px;background:#050708;box-shadow:inset 0 2px 5px #000}.we-pay-terminal small{display:block;text-align:center;font-size:7px;color:#758896}
+.we-pay-action{width:100%;min-height:48px;margin-top:15px;border-radius:9px;background:#c5a568;color:#10202a;font-weight:800}
+.we-face,.we-approved{min-height:185px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.we-face-box{width:90px;height:90px;border:3px solid #d5c69b;border-radius:22px;display:grid;place-items:center;font-size:35px;color:#d5c69b;animation:weFace 1s ease-in-out infinite}.we-face b,.we-approved b{font-size:18px;margin-top:14px}.we-face small,.we-approved small{font-size:9px;color:#8599a7;margin-top:5px}.we-approved-icon{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:#5aa67b1c;border:1px solid #6aba8e55;color:#86d6aa;font-size:34px}
+@keyframes weFace{0%,100%{transform:scale(.96);opacity:.68}50%{transform:scale(1.04);opacity:1}}
+</style><script>
+(function(){
+  var STORE="we-payment-last-wealth";
+  function moneyNumber(text){return Number(String(text||"").replace(/[^0-9-]/g,""))||0}
+  function tier(wealth){
+    if(wealth>=6000)return{key:"centurion",label:"CENTURION",brand:"AMERICAN EXPRESS"};
+    if(wealth>=4000)return{key:"platinum",label:"PLATINUM",brand:"AMERICAN EXPRESS"};
+    if(wealth>=2500)return{key:"gold",label:"GOLD",brand:"AMERICAN EXPRESS"};
+    if(wealth>=1500)return{key:"green",label:"GREEN",brand:"AMERICAN EXPRESS"};
+    return{key:"sparkasse",label:"CLASSIC",brand:"SPARKASSE"}
+  }
+  function last4(seed){var h=0,s=String(seed||"PLAYER");for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return String(1000+h%9000)}
+  function expiry(){var d=new Date();d.setFullYear(d.getFullYear()+3);return String(d.getMonth()+1).padStart(2,"0")+"/"+String(d.getFullYear()).slice(-2)}
+  function cardMarkup(name,wealth){
+    var t=tier(wealth),safe=String(name||"PLAYER").replace(/[<>&"]/g,"");
+    return '<div class="we-card-brand"><span>'+t.brand+'</span><span>WORLD EMPIRE</span></div>'+
+      '<div class="we-card-chip"></div>'+
+      '<div class="we-card-number">•••• •••• •••• '+last4(safe)+'</div>'+
+      '<div class="we-card-meta"><span><small>KARTENINHABER</small><b>'+safe.toUpperCase()+'</b></span><span><small>GÜLTIG BIS</small><b>'+expiry()+'</b></span></div>'+
+      '<footer><b>'+t.label+'</b><span>WORLD EMPIRE</span></footer>'
+  }
+  function bankWealth(){
+    var boxes=document.querySelectorAll(".stat-grid>div");
+    for(var i=0;i<boxes.length;i++){var s=boxes[i].querySelector("small");if(s&&s.textContent.indexOf("Gesamtverm")>=0){var b=boxes[i].querySelector("b");var v=moneyNumber(b&&b.textContent);if(v){try{sessionStorage.setItem(STORE,String(v))}catch(e){}return v}}}
+    try{return Number(sessionStorage.getItem(STORE)||0)}catch(e){return 0}
+  }
+  function applyBankCard(){
+    var cards=document.querySelectorAll(".bank-card:not([data-we-card])");
+    for(var i=0;i<cards.length;i++){
+      var card=cards[i],foot=card.querySelector("footer b"),name=foot?foot.textContent:"PLAYER",wealth=bankWealth();
+      var t=tier(wealth);
+      card.classList.add("empire-payment-card","card-"+t.key);
+      card.setAttribute("data-we-card","1");
+      card.innerHTML=cardMarkup(name,wealth)
+    }
+  }
+  function currentPlayer(){
+    var cards=document.querySelectorAll(".player-card");
+    for(var i=0;i<cards.length;i++){
+      var du=cards[i].querySelector(".player-details b small");
+      if(du&&du.textContent.indexOf("DU")>=0){
+        var b=cards[i].querySelector(".player-details b");
+        var n=b&&b.childNodes.length?b.childNodes[0].textContent:"PLAYER";
+        var cash=moneyNumber(cards[i].querySelector(".player-money b")&&cards[i].querySelector(".player-money b").textContent);
+        return{name:String(n||"PLAYER").trim(),cash:cash}
+      }
+    }
+    return{name:"PLAYER",cash:0}
+  }
+  function showPayment(btn){
+    if(document.querySelector(".we-pay-backdrop"))return;
+    var text=btn.textContent||"",parts=text.split("·"),amount=moneyNumber(parts[1]||text);
+    var title="GRUNDSTÜCK";
+    var action=btn.closest(".dice-actions");
+    if(action){
+      var all=document.querySelectorAll(".inspector h2");
+      if(all.length)title=all[all.length-1].textContent||title
+    }
+    var player=currentPlayer(),wealth=bankWealth()||player.cash,t=tier(wealth);
+    var overlay=document.createElement("div");overlay.className="we-pay-backdrop";
+    overlay.innerHTML='<div class="we-pay-modal"><button class="we-pay-close" aria-label="Schließen">×</button>'+
+      '<div class="we-pay-head"><small>WORLD EMPIRE PAY</small><h2>'+title+'</h2><strong>'+amount.toLocaleString("de-DE")+' €</strong></div>'+
+      '<div class="bank-card empire-payment-card card-'+t.key+'">'+cardMarkup(player.name,wealth)+'</div>'+
+      '<div class="we-pay-stage"><div class="we-pay-terminal"><div class="we-pay-screen">KARTE BEREIT</div><div class="we-pay-slot"></div><small>Virtuelle Spielkarte · keine echte Zahlung</small></div><button class="we-pay-action">Mit Face ID bestätigen</button></div></div>';
+    document.body.appendChild(overlay);
+    function close(){overlay.remove()}
+    overlay.querySelector(".we-pay-close").addEventListener("click",close);
+    overlay.addEventListener("click",function(e){if(e.target===overlay)close()});
+    overlay.querySelector(".we-pay-action").addEventListener("click",function(){
+      var stage=overlay.querySelector(".we-pay-stage");
+      overlay.querySelector(".we-pay-close").style.visibility="hidden";
+      stage.innerHTML='<div class="we-face"><div class="we-face-box">⌁</div><b>Face ID</b><small>Spielzahlung wird bestätigt …</small></div>';
+      setTimeout(function(){
+        overlay.querySelector(".we-pay-close").style.visibility="";
+        stage.innerHTML='<div class="we-approved"><div class="we-approved-icon">✓</div><b>Bestätigt</b><small>'+amount.toLocaleString("de-DE")+' € · virtuelle Spielzahlung</small><button class="we-pay-action">Kauf abschließen</button></div>';
+        stage.querySelector(".we-pay-action").addEventListener("click",function(){
+          close();btn.setAttribute("data-we-bypass","1");btn.click();setTimeout(function(){btn.removeAttribute("data-we-bypass")},0)
+        })
+      },850)
+    })
+  }
+  document.addEventListener("click",function(e){
+    var btn=e.target&&e.target.closest?e.target.closest("button"):null;
+    if(!btn||btn.hasAttribute("data-we-bypass")||btn.disabled)return;
+    var text=(btn.textContent||"").trim();
+    if(text.indexOf("Kaufen")===0&&text.indexOf("€")>=0){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();showPayment(btn)}
+  },true);
+  new MutationObserver(function(){applyBankCard()}).observe(document.documentElement,{childList:true,subtree:true});
+  applyBankCard()
+})();
 </script></body></html>
 `,De={"/sw.js":{mime:"application/javascript",data:"Y29uc3QgQ0FDSEU9J3dvcmxkLWVtcGlyZS12Ni1ib2FyZC1yZXN0b3JlZCc7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsZT0+e2Uud2FpdFVudGlsKGNhY2hlcy5vcGVuKENBQ0hFKS50aGVuKGM9PmMuYWRkQWxsKFsnLycsJy9pY29uLTE5Mi5wbmcnLCcvaWNvbi01MTIucG5nJ10pKSk7c2VsZi5za2lwV2FpdGluZygpO30pOwpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJyxlPT57ZS53YWl0VW50aWwoY2FjaGVzLmtleXMoKS50aGVuKGtleXM9PlByb21pc2UuYWxsKGtleXMuZmlsdGVyKGs9Pmsuc3RhcnRzV2l0aCgnd29ybGQtZW1waXJlLScpJiZrIT09Q0FDSEUpLm1hcChrPT5jYWNoZXMuZGVsZXRlKGspKSkpLnRoZW4oKCk9PnNlbGYuY2xpZW50cy5jbGFpbSgpKSk7fSk7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignZmV0Y2gnLGU9Pntjb25zdCB1PW5ldyBVUkwoZS5yZXF1ZXN0LnVybCk7aWYoZS5yZXF1ZXN0Lm1ldGhvZCE9PSdHRVQnfHx1Lm9yaWdpbiE9PWxvY2F0aW9uLm9yaWdpbnx8dS5wYXRobmFtZS5zdGFydHNXaXRoKCcvYXBpLycpfHx1LnBhdGhuYW1lLnN0YXJ0c1dpdGgoJy9yb29tLycpKXJldHVybjtpZihlLnJlcXVlc3QubW9kZT09PSduYXZpZ2F0ZScpe2UucmVzcG9uZFdpdGgoZmV0Y2goZS5yZXF1ZXN0KS50aGVuKHI9PntpZihyLm9rKXtjb25zdCBjb3B5PXIuY2xvbmUoKTtjYWNoZXMub3BlbihDQUNIRSkudGhlbihjPT5jLnB1dCgnLycsY29weSkpO31yZXR1cm4gcjt9KS5jYXRjaCgoKT0+Y2FjaGVzLm1hdGNoKCcvJykpKTt9fSk7Cg=="},"/manifest.webmanifest":{mime:"application/manifest+json",data:"eyJuYW1lIjogIldvcmxkIEVtcGlyZSIsICJzaG9ydF9uYW1lIjogIkVtcGlyZSIsICJpZCI6ICIvIiwgInN0YXJ0X3VybCI6ICIvIiwgInNjb3BlIjogIi8iLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgImJhY2tncm91bmRfY29sb3IiOiAiIzEwMWQyYyIsICJ0aGVtZV9jb2xvciI6ICIjMTAxZDJjIiwgImljb25zIjogW3sic3JjIjogIi9pY29uLTE5Mi5wbmciLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3BuZyIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9LCB7InNyYyI6ICIvaWNvbi01MTIucG5nIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJpbWFnZS9wbmciLCAicHVycG9zZSI6ICJhbnkgbWFza2FibGUifV19"},"/icon-192.png":{mime:"image/png",data:"iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADqElEQVR4nO3d3XXaQBSF0XFWCnAD7sC9uIMU5w7SiwvKA1nEsUGAjkD3Sns/+QlGM98MMv7h6fnldcBcP9YeAL0JiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAjogo/3t7WHUJqAphzq0dAEARER0FmfDx6H0DkCOu17MRo6SUAnaOV6ArqBsL4T0FfTlWjoCwH9Rx+3EtDNRPaZgP65vgwNHQnoL03MI6CZBHcgoDHm1qChIaChg8zeAwrrEd/eA8rtvKFyAT1yPTqufbUxlwtoPGqOFnyWhy1qtXpGzYDGGB/vbwUna8K9R1t2QsoF9Prr9/Hr+03ZPR75MaP9PD8V/Fx7ABcc5m7ZWau5lU+qP9RyJ9BJXe5Xln3w+vWMLgGNJrM5Fhpn2Tue79oENJaY1harMjHIajdAo2ZA09M0O4L632w3OniOKgZ0Uf2JnjG84ld0TsuADm6a8crLU38/TGgc0Lh66ldZniuf9PqxFbwBGmUDummyym7fi3/gUXbk1ysa0K0mVqLmItUc1QwbCWic2dCrr9PJIa0+qgVtJ6CDgv8RoeCQFlT9Z2Ez3OPHZ7kwnWqXc/T0/PK69hjO2t5+na1sQFt7CePBBEREQA2Uff0aAiJUOqDKO4+D0gFRn4CICKi64q/jAiJSPaDi+4/qAVGcgEqrfwALiEiDgOrvwj1rEBCVCaiuFkevgIgIiEiPgFoc5vvUIyDKElBRXQ5dAREREJE2AXU50vemTUC70mi3CIiIgIgIiEingBrdGexHp4B2otc+ERARARFpFlCv430PmgW0ee12iICICIiIgIj0C6jdXcL1Ol5av4AoRUBESv+jcepzAhEREBEBEREQEQERafx5YRv7MKiO7yKOvifQxuoZba+oZUBN5/qijtfVMiDqEBARAREREBEBEWkZUNO3TC7qeF0tAxo953pa0yvy+0BEup5AFCEgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICJ/ALc01exynTKqAAAAAElFTkSuQmCC"},"/icon-512.png":{mime:"image/png",data:"iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAALCUlEQVR4nO3d25UTRxRAUfByACRABpMLGTg4MnAuBOQPvPCYh5BGUnfVPXt/8VndXVWnH8zS+w8fX94B0PPH2QMA4BwCABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECABAlAABRAgAQJQAAUQIAECUAAFECQNqXz5/OHgKcRgDo+rr7awBZAgAQJQBEvb7x9xBAkwBQ9OOOrwEECQBAlACQ86ubfQ8B1AgALZd3eQ0gRQAIuWZ/1wA6BAAgSgCouP7W3kMAEQJAwq17ugZQIAAAUQLAfG+7nfcQwHgCwHD37OMawGwCABAlAEx2/y28hwAGEwDGetTerQFMJQDM9NhdWwMYSQAAogSAgZ5xw+4hgHkEgGmet1NrAMMIAECUADDKs2/SPQQwiQAwxzG7swYwhgAARAkAQxx5Y+4hgBkEgAmO35E1gAEEgO2dtRdrALsTAIAoAWBv596GewhgawLAxlbYf1cYA7yNAABECQC7WufWe52RwE0EgC2ttueuNh64hgAARAkA+1nzdnvNUcEFAsBmVt5nVx4b/EgA2Mn6O+z6I4RvBAAgSgDYxi4317uMEwSAPey1q+41WrIEACBKANjAjjfUO46ZGgFgdfvupPuOnAgBOJk9gjLz/1wCcD5r4ILdT87u438qJ+d0ArCEL58/WQw/mnFOZhzFY5nwixCAk7389fe3f1sSr006G5OO5X6vz8br+c/x/jx7APzP17VhVTCSEK7GE8CKrJN5Z2DeEd3KGViQACyq/JJ06oFPPa7fKk/mxQnA+S688LFs2N2FOexV5+kEYHW1u6fZBzv76L5Tm7o7EoA9RBZS4TALx/guc5i7E4BtWFHswlzdhQDsZPYz9eBD+87gI509RecRgCXc9DVs5AIbeVAXjDzemw7KF+AVCMCWht1nTTqW60066mETskMANmbJsQLzcF8CsLcBd167j/8eux/7gOkXJwAT7LsI9x35o+x7BvYdOd8IwCru/CbmXozD3D/ZfAFehACMslcD9hrt8+x1HvYaLZcJwDS7rM9dxnmMXc7GLuPkSn4PYCA/KsDD2fpH8gSwkMdu2Suv2JXHdpaVz8ljx+bWZB0CMNmaX4YXHNIiFjwza04hHkUA5ltqAS81mAUtdX6WGgzP4BtAgq8C3MTWH+EJIOT0VX36ALZw+lk6fQAc5v2Hjy9nj4H/OWD5nfIoYFu5ydRr5DF0KZ4AiuzF/MisCBKAqINXu83lVi4QBxCArsP+h5/N5W0OuzouUJYALOfgl6QWf9nBV98HgNUIAM+9BxSYezz1urg0CAD/esZ2YIu5n+vC8wgA/3nsXaFd5lEee1FcF74RAL5ng5jKleU7/hBsUSus1Xs+2a0w/mF2vxy+AC/IEwC/9OZdY4XtZh6Xg4cTAC6xd+zOFeQCAeA3bv1saMd5nlsvhGvBZQKwqNVemF65ldhxnm3TC7HafOYrvwfAtfyowBZW2/pZmScAbnNhf7H1HMMl4FEEgJv99OWyredIPz3/LgG3EgDe6PV2Y+s5nvPP/QRgXeu/bXfXebotLsH6MzlLALjX+hvQVM48dxIAgCgBAIgSAIAoAViar2fszhxemQAARAkAQJQAAEQJwOq8QmVfZu/iBAAgSgAAogQAIEoAAKIEYAO+pLEj83Z9AgAQJQAAUQIAECUAe/A6lb2YsVsQAIAoAQCIEgCAKAEAiBKAbfiqxi7M1V0IAECUAABECQBAlADsxKtV1meWbkQAAKIEACBKAACiBAAgSgA24wsbKzM/9yIAAFECABAlAABRAgAQJQD78Z2NNZmZ2xEAgCgBAIgSAIAoAdiSl62sxpzckQAARAkAQJQAAEQJAECUAOzKNzfWYTZuSgAAogQAIEoAAKIEYGNevLIC83BfAgAQJQAAUQIAECUAAFECsDff3ziXGbg1AQCIEgCAKAEAiBKA7XkJy1nMvd0JAECUAABECQBAlAAARAnABL7FcTyzbgABAIgSAIAoAQCIEgCAKAEYwhc5jmS+zSAAAFECABAlAABRAjCH17Icw0wbQwAAogQAIEoAAKIEACBKAEbxdY5nM8cmEQCAKAEAiBIAgCgBmMYrWp7H7BpGAACiBAAgSgAAogQAIEoABvKljmcwr+YRAIAoAQCIEgCAKAGYyetaHsuMGkkAAKIEACBKAACiBAAgSgDG8tWORzGXphIAgCgBAIgSAIAoAQCIEoDJfLvjfmbRYAIAECUAAFECABAlAMN5gcs9zJ/ZBAAgSgAAot5/+Phy9hgAOIEnAIAoAQCIEgCAKAEAiBIAgCgBAIgSAIAoAQCIEgCAKAEAiBIAgCgBAIgSAIAoAQCIEgCAKAEAiPrz7AFwgi+fP509BFbkF4Br/CJYi62f35KBDq+AQuz+XMM86RCACqua65ktEQKQYD1zK3OmQAAAogRgPrdyvI2ZM54AAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAzOcHnngbM2c8AQCIEoAEt3LcypwpEIAK65nrmS0RAhBiVXMN86Tj/YePL2ePgaP5pSd+ytZfIwAAUV4BAUQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQJQAAEQJAECUAABECQBAlAAARAkAQNQ/B8suKIOB/E0AAAAASUVORK5CYII="}},St={async fetch(e,t,n){let i=new URL(e.url);if(De[i.pathname]){let s=De[i.pathname];return new Response(e.method==="HEAD"?null:Uint8Array.from(atob(s.data),c=>c.charCodeAt(0)),{headers:{"Content-Type":s.mime,"Cache-Control":"no-cache"}})}return i.pathname==="/health"||i.pathname.startsWith("/api/")||i.pathname.startsWith("/room/")?_e.fetch(e,{...t,ALLOWED_ORIGINS:i.origin},n):e.method!=="GET"&&e.method!=="HEAD"?new Response("Method Not Allowed",{status:405}):i.pathname!=="/"&&i.pathname!=="/index.html"?new Response("Not found",{status:404}):new Response(e.method==="HEAD"?null:tt,{headers:{"Content-Type":"text/html;charset=utf-8","Cache-Control":"no-cache","X-Content-Type-Options":"nosniff"}})}};export{me as EmpireRoom,St as default};

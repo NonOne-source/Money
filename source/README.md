@@ -7,7 +7,7 @@ Diese Änderung setzt die gewünschten Punkte 1, 7, 10, 12, 21 und 22 um.
 - Handelsvergleich: Buchwerte einschließlich Bargeld und Hypotheken, neu vervollständigte/aufgelöste Gruppen auf beiden Seiten. Kein behaupteter Marktpreis.
 - Auktionen: +10, +50 und +100 relativ zum aktuellen Höchstgebot bzw. Startgebot. Die Schnellwahl setzt nur den Eingabebetrag; erst „Verbindlich bieten“ sendet ihn.
 - Schuldenhilfe: anhand der tatsächlichen Regeln geprüfte Vorschläge für Aktienverkauf, gleichmäßigen Gebäudeabbau und Hypotheken. Jeder Schritt wird einzeln ausgelöst; nichts wird automatisch verkauft.
-- iPad: die Gesamtansicht richtet sich nach der Bildschirmhöhe, maximal 680 CSS-Pixel Breite. Vergrößerung auf 150/200 % bleibt verfügbar. Gilt für beide Bretter.
+- Spielbrett: ursprüngliche Größe vor der iPad-Verkleinerung wiederhergestellt. Vergrößerung auf 150/200 % bleibt verfügbar. Gilt für beide Bretter.
 
 ## Konten
 

@@ -114,7 +114,7 @@ export function Board({
   }, [game.rollId, reduced]);
   const active = current(game);
   return (
-    <section className={`board-viewport ${zoom===1?"board-fit":"board-zoomed"}`}><div className="zoom-toolbar"><span>Brettansicht</span>{[1,1.5,2].map(n=><button key={n} className="button" aria-pressed={zoom===n} onClick={()=>setZoom(n)}>{n===1?'Gesamt':`${n*100} %`}</button>)}</div><div className="board-scroll"><div className="board-surround" style={{width:`${zoom*100}%`,'--board-zoom':zoom} as CSSProperties}>
+    <section className="board-viewport"><div className="zoom-toolbar"><span>Brettansicht</span>{[1,1.5,2].map(n=><button key={n} className="button" aria-pressed={zoom===n} onClick={()=>setZoom(n)}>{n===1?'Gesamt':`${n*100} %`}</button>)}</div><div className="board-scroll"><div className="board-surround" style={{width:`${zoom*100}%`,'--board-zoom':zoom} as CSSProperties}>
       <div className="board-coordinate top">
         WORLD EMPIRE · {game.settings.boardVariant === "dortmund" ? "DORTMUND EDITION" : "WORLD EDITION"}
       </div>

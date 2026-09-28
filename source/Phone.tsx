@@ -47,6 +47,60 @@ export type AppId =
   | "stocks"
   | "casino"
   | "news";
+export type EmpireCardTier = {
+  key: "sparkasse" | "green" | "gold" | "platinum" | "centurion";
+  label: string;
+  brand: string;
+  nextAt?: number;
+};
+export function empireCardTier(wealth: number): EmpireCardTier {
+  if (wealth >= 6000) return { key: "centurion", label: "CENTURION", brand: "AMERICAN EXPRESS" };
+  if (wealth >= 4000) return { key: "platinum", label: "PLATINUM", brand: "AMERICAN EXPRESS", nextAt: 6000 };
+  if (wealth >= 2500) return { key: "gold", label: "GOLD", brand: "AMERICAN EXPRESS", nextAt: 4000 };
+  if (wealth >= 1500) return { key: "green", label: "GREEN", brand: "AMERICAN EXPRESS", nextAt: 2500 };
+  return { key: "sparkasse", label: "CLASSIC", brand: "SPARKASSE", nextAt: 1500 };
+}
+function maskedLastFour(seed: string) {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  return String(1000 + (hash % 9000));
+}
+export function EmpirePaymentCard({
+  name,
+  wealth,
+  seed,
+  now,
+  compact = false,
+}: {
+  name: string;
+  wealth: number;
+  seed: string;
+  now: number;
+  compact?: boolean;
+}) {
+  const tier = empireCardTier(wealth);
+  const expiryDate = new Date(now);
+  expiryDate.setFullYear(expiryDate.getFullYear() + 3);
+  const expiry = `${String(expiryDate.getMonth() + 1).padStart(2, "0")}/${String(expiryDate.getFullYear()).slice(-2)}`;
+  return (
+    <div className={`bank-card empire-payment-card card-${tier.key} ${compact ? "compact" : ""}`}>
+      <div className="card-brand-row">
+        <span className="card-brand">{tier.brand}</span>
+        <Landmark size={22} />
+      </div>
+      <div className="card-chip" aria-hidden="true"><i /><i /><i /></div>
+      <div className="card-number">•••• •••• •••• {maskedLastFour(seed)}</div>
+      <div className="card-meta">
+        <span><small>KARTENINHABER</small><b>{name.toUpperCase()}</b></span>
+        <span><small>GÜLTIG BIS</small><b>{expiry}</b></span>
+      </div>
+      <footer>
+        <b>{tier.label}</b>
+        <span>WORLD EMPIRE</span>
+      </footer>
+    </div>
+  );
+}
 export const APPS = [
   {
     id: "bank",
@@ -121,6 +175,7 @@ export function Phone({
 }) {
   const PROPERTIES = gameProperties(game);
   const p = game.players.find((p) => p.id === you)!;
+  const cardTier = empireCardTier(netWorth(game, p));
   const mine =
     current(game)?.id === you && !p.bankrupt && game.phase === "playing";
   const active = !game.manualPause && !game.auction && !game.tradeUntil && mine && now >= game.actionNotBefore;
@@ -321,14 +376,15 @@ export function Phone({
             <>
               <div className="app-eyebrow">EMPIRE PRIVATE BANKING</div>
               <h2>Dein Überblick.</h2>
-              <div className="bank-card">
-                <Landmark size={23} />
-                <span>KONTOSTAND</span>
-                <strong>{money(p.money)}</strong>
-                <footer>
-                  <b>{p.name.toUpperCase()}</b>
-                  <span>•••• {you.slice(-4).toUpperCase()}</span>
-                </footer>
+              <EmpirePaymentCard
+                name={p.name}
+                wealth={netWorth(game, p)}
+                seed={you}
+                now={now}
+              />
+              <div className="card-tier-note">
+                <span><b>{cardTier.brand}</b> · {cardTier.label}</span>
+                <small>{cardTier.nextAt ? `Nächste Kartenstufe ab ${money(cardTier.nextAt)} Vermögen` : "Höchste Kartenstufe erreicht"}</small>
               </div>
               <div className="stat-grid">
                 <div>

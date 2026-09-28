@@ -4759,11 +4759,10 @@ lucide-react/dist/esm/lucide-react.mjs:
     if(document.querySelector(".we-pay-backdrop"))return;
     var text=btn.textContent||"",parts=text.split("·"),amount=moneyNumber(parts[1]||text);
     var title="GRUNDSTÜCK";
-    var action=btn.closest(".dice-actions");
-    if(action){
-      var all=document.querySelectorAll(".inspector h2");
-      if(all.length)title=all[all.length-1].textContent||title
-    }
+    var activeTile=document.querySelector(".tile.active-tile .tile-name");
+    if(activeTile&&activeTile.textContent)title=activeTile.textContent;
+    var all=document.querySelectorAll(".inspector h2");
+    if(all.length&&all[all.length-1].textContent)title=all[all.length-1].textContent
     var player=currentPlayer(),wealth=bankWealth()||player.cash,t=tier(wealth);
     var overlay=document.createElement("div");overlay.className="we-pay-backdrop";
     overlay.innerHTML='<div class="we-pay-modal"><button class="we-pay-close" aria-label="Schließen">×</button>'+

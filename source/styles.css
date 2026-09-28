@@ -3704,3 +3704,264 @@ svg {
 /* V6: accounts and clear trading */
 .account-panel form{display:grid;gap:12px}.account-tabs,.quick-bids{display:flex;gap:8px}.account-tabs>*{flex:1}.account-panel label{display:grid;gap:6px}.account-panel input{min-height:44px}.account-notice,.account-message{padding:12px;background:#213d47;border-radius:10px}.google-login{text-align:center;display:block}.google-login.unavailable{opacity:.55;cursor:not-allowed}.profile-identity{display:flex;gap:14px;align-items:center;margin:18px 0}.profile-identity h3{margin:0}.profile-avatar{font-size:48px;color:#e2bd78}.avatar-choices{display:flex;flex-wrap:wrap}.property-tags{display:flex;flex-wrap:wrap;gap:5px;margin:5px 0}.property-tag{display:inline-block;border-left:5px solid;padding:5px 8px;background:#203746;border-radius:5px;font-size:12px}.trade-property{border-left:6px solid;padding:9px 8px!important;margin:7px 0;background:#213440;border-radius:7px;min-height:48px;align-items:center}.trade-property small{display:block;font-size:10px;color:#aebdc8}.trade-property input:disabled+span{opacity:.6}.trade-comparison,.debt-helper{padding:14px;background:#152b36;border:1px solid #d9b97644;border-radius:12px;margin:15px 0}.trade-comparison p{font-size:12px}.trade-comparison small,.debt-helper small{display:block;line-height:1.5;color:#aebdc8;font-size:11px}.debt-helper ol{padding-left:20px}.debt-helper li{margin:9px 0;font-size:12px}.debt-helper li b{white-space:nowrap;color:#e2c58a}.debt-helper .button{white-space:normal;width:100%;min-height:48px;font-size:12px}.quick-bids .button{flex:1;display:grid;gap:4px;min-height:48px}.quick-bids small{font-size:10px}.ownership-dialog{position:fixed;inset:0;margin:auto;width:min(600px,calc(100vw - 24px));max-height:85dvh;overflow:auto;color:#edf2f6;background:#112331;border:1px solid #b99b65;border-radius:18px;padding:22px}.ownership-dialog::backdrop{background:#07101cbb;backdrop-filter:blur(6px)}.ownership-dialog header{display:flex;justify-content:space-between;align-items:center;gap:8px}.ownership-dialog h2{font-size:22px}.ownership-property{display:grid;border-left:6px solid;border-radius:7px;background:#203744;padding:10px;margin:9px 0;gap:4px}.ownership-property small{color:#aebbc4}.ownership-property span{font-size:12px}.player-card[role=button]{cursor:pointer}.player-card[role=button]:focus-visible{outline:2px solid #e2bd78;outline-offset:3px}
 .trade-property>span{font-size:12px;line-height:1.4}.trade-property small{font-size:10px}.trade-property input{flex-shrink:0;width:18px;height:18px}
+
+
+/* Wealth-based in-game payment cards */
+.empire-payment-card {
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  isolation: isolate;
+  box-shadow: inset 0 1px 0 #ffffff22, 0 18px 45px #00000035;
+}
+.empire-payment-card:after {
+  content: "WORLD EMPIRE";
+  position: absolute;
+  right: -16px;
+  bottom: 24px;
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: -2px;
+  opacity: .045;
+  transform: rotate(-10deg);
+  z-index: -1;
+}
+.empire-payment-card.card-sparkasse {
+  background: linear-gradient(145deg, #dc1020, #9f0712 68%, #74040c);
+  border-color: #ff98a055;
+}
+.empire-payment-card.card-green {
+  background: linear-gradient(145deg, #1f5c48, #12392e 70%, #09251f);
+  border-color: #a6dcc155;
+}
+.empire-payment-card.card-gold {
+  background: linear-gradient(145deg, #d3ad62, #8b672c 63%, #4d3819);
+  border-color: #f8deb088;
+  color: #fff9e8;
+}
+.empire-payment-card.card-platinum {
+  background: linear-gradient(145deg, #bdc4c8, #667078 57%, #343c43);
+  border-color: #eef4f788;
+  color: #fff;
+}
+.empire-payment-card.card-centurion {
+  background:
+    radial-gradient(circle at 78% 20%, #ffffff15, transparent 30%),
+    linear-gradient(145deg, #17191d, #050608 68%, #000);
+  border-color: #888f9655;
+  color: #f0f0ec;
+}
+.card-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 25px;
+}
+.card-brand {
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  font-weight: 700;
+  color: #ffffffd8;
+}
+.card-chip {
+  width: 39px;
+  height: 29px;
+  margin-top: 18px;
+  border-radius: 7px;
+  border: 1px solid #fff8d966;
+  background: linear-gradient(145deg, #d5bc73, #8e743b);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px #30260f33;
+}
+.card-chip i {
+  border-right: 1px solid #49381255;
+}
+.card-number {
+  margin-top: 18px;
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+}
+.card-meta > span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.card-meta small {
+  font-size: 5.5px;
+  letter-spacing: 1.2px;
+  opacity: .64;
+}
+.card-meta b {
+  font-size: 7.5px;
+  letter-spacing: .7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.empire-payment-card footer {
+  border-top: 1px solid #ffffff18;
+  padding-top: 10px;
+  margin-top: 15px;
+}
+.empire-payment-card.compact {
+  min-height: 185px;
+  transform: perspective(700px) rotateX(2deg);
+  animation: payment-card-in .45s cubic-bezier(.2,.8,.2,1);
+}
+.card-tier-note {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 2px 2px;
+}
+.card-tier-note span {
+  font-size: 8px;
+  letter-spacing: .5px;
+}
+.card-tier-note small {
+  font-size: 7px;
+  color: #7f99ab;
+  text-align: right;
+}
+
+.payment-flow {
+  display: grid;
+  gap: 18px;
+}
+.payment-flow-head {
+  text-align: center;
+}
+.payment-flow-head h2 {
+  margin: 7px 0 4px;
+  font-size: 24px;
+}
+.payment-flow-head > strong {
+  font-size: 28px;
+  font-family: Manrope, sans-serif;
+  font-weight: 500;
+}
+.payment-terminal {
+  background: linear-gradient(165deg, #29333a, #151c21);
+  border: 1px solid #ffffff12;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: inset 0 1px #ffffff0b, 0 14px 30px #0003;
+}
+.terminal-screen {
+  display: grid;
+  place-items: center;
+  height: 52px;
+  border-radius: 8px;
+  background: #a5c3a51c;
+  border: 1px solid #b6d4b72b;
+  color: #b8d0bb;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.terminal-slot {
+  width: 78%;
+  height: 8px;
+  border-radius: 8px;
+  margin: 19px auto 13px;
+  background: #050708;
+  border-bottom: 1px solid #ffffff14;
+  box-shadow: inset 0 2px 5px #000;
+}
+.payment-terminal small {
+  display: block;
+  text-align: center;
+  font-size: 7px;
+  color: #758896;
+}
+.face-id-button {
+  min-height: 48px;
+}
+.face-id-stage,
+.payment-approved {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.face-id-frame {
+  width: 92px;
+  height: 92px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 15px;
+  color: #d5c69b;
+}
+.face-id-frame span {
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  border-color: #d5c69b;
+  border-style: solid;
+}
+.face-id-frame span:nth-child(1) { left: 0; top: 0; border-width: 3px 0 0 3px; border-radius: 12px 0 0 0; }
+.face-id-frame span:nth-child(2) { right: 0; top: 0; border-width: 3px 3px 0 0; border-radius: 0 12px 0 0; }
+.face-id-frame span:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 3px 3px; border-radius: 0 0 0 12px; }
+.face-id-frame span:nth-child(4) { right: 0; bottom: 0; border-width: 0 3px 3px 0; border-radius: 0 0 12px 0; }
+.face-id-stage .face-id-frame {
+  animation: face-scan 1.1s ease-in-out infinite;
+}
+.face-id-stage b,
+.payment-approved h3 {
+  font-size: 18px;
+  margin: 0 0 5px;
+}
+.face-id-stage small,
+.payment-approved p {
+  color: #8599a7;
+  font-size: 9px;
+}
+.payment-check {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #5aa67b1c;
+  border: 1px solid #6aba8e55;
+  color: #86d6aa;
+  margin-bottom: 12px;
+  animation: payment-pop .35s cubic-bezier(.2,.9,.3,1.2);
+}
+.payment-approved .button {
+  margin-top: 15px;
+}
+@keyframes face-scan {
+  0%,100% { transform: scale(.96); opacity: .68; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+@keyframes payment-card-in {
+  from { opacity: 0; transform: perspective(700px) translateY(20px) rotateX(12deg); }
+  to { opacity: 1; transform: perspective(700px) translateY(0) rotateX(2deg); }
+}
+@keyframes payment-pop {
+  from { transform: scale(.55); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@media (max-width: 600px) {
+  .empire-payment-card {
+    min-height: 190px;
+  }
+  .card-number {
+    font-size: 14px;
+  }
+}

@@ -100,8 +100,9 @@ function App() {
     [payment, setPayment] = useState<null | {
       city: string;
       amount: number;
-      stage: "ready" | "face" | "approved";
+      stage: "ready" | "swipe" | "face" | "approved";
     }>(null);
+  const [swipeProgress, setSwipeProgress] = useState(0);
   useEffect(()=>{const logout=()=>{setConnection(null);setModal(null);setPhone(null);};window.addEventListener('we-logout',logout);return()=>window.removeEventListener('we-logout',logout);},[]);
   const [now, setNow] = useState(Date.now()),
     [sound, setSound] = useState(
@@ -306,14 +307,15 @@ function App() {
                     <button
                       className="button gold"
                       disabled={locked || p.money < (landed?.price || 0)}
-                      onClick={() =>
-                        landed &&
+                      onClick={() => {
+                        if (!landed) return;
+                        setSwipeProgress(0);
                         setPayment({
                           city: BOARD[cp?.position || 0].id,
                           amount: landed.price,
                           stage: "ready",
-                        })
-                      }
+                        });
+                      }}
                     >
                       Kaufen · {money(landed?.price || 0)}
                     </button>
@@ -1116,26 +1118,83 @@ function App() {
             {payment.stage === "ready" && (
               <>
                 <div className="payment-terminal">
-                  <span className="terminal-screen">KARTE BEREIT</span>
+                  <span className="terminal-screen">ZAHLUNGSART WÄHLEN</span>
                   <div className="terminal-slot" />
                   <small>Virtuelle Spielkarte · keine echte Zahlung</small>
                 </div>
-                <button
-                  className="button gold full face-id-button"
-                  onClick={() => {
-                    setPayment({ ...payment, stage: "face" });
-                    window.setTimeout(
-                      () =>
-                        setPayment((x) =>
-                          x ? { ...x, stage: "approved" } : x,
-                        ),
-                      reduced ? 120 : 850,
-                    );
-                  }}
-                >
-                  <ShieldCheck size={17} /> Mit Face ID bestätigen
-                </button>
+                <div className="payment-methods">
+                  <button
+                    className="button gold full face-id-button"
+                    onClick={() => {
+                      setPayment({ ...payment, stage: "face" });
+                      window.setTimeout(
+                        () =>
+                          setPayment((x) =>
+                            x ? { ...x, stage: "approved" } : x,
+                          ),
+                        reduced ? 120 : 850,
+                      );
+                    }}
+                  >
+                    <ShieldCheck size={17} /> Face ID
+                  </button>
+                  <button
+                    className="button full"
+                    onClick={() => {
+                      setSwipeProgress(0);
+                      setPayment({ ...payment, stage: "swipe" });
+                    }}
+                  >
+                    Karte durchziehen
+                  </button>
+                </div>
               </>
+            )}
+
+            {payment.stage === "swipe" && (
+              <div className="card-swipe-stage">
+                <div className="swipe-terminal">
+                  <div className="swipe-slot">
+                    <div
+                      className="swipe-mini-card"
+                      style={{
+                        transform: `translateX(${Math.min(100, swipeProgress)}%) rotate(-4deg)`,
+                      }}
+                    >
+                      <span>WORLD EMPIRE</span>
+                      <b>•••• {String(1000 + (you.split("").reduce((n, ch) => (n * 31 + ch.charCodeAt(0)) >>> 0, 0) % 9000))}</b>
+                    </div>
+                  </div>
+                  <small>Ziehe die Karte vollständig durch das Lesegerät.</small>
+                </div>
+                <input
+                  className="card-swipe-range"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={swipeProgress}
+                  aria-label="Karte durch Lesegerät ziehen"
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    setSwipeProgress(value);
+                    if (value >= 96) {
+                      window.setTimeout(
+                        () =>
+                          setPayment((x) =>
+                            x?.stage === "swipe"
+                              ? { ...x, stage: "approved" }
+                              : x,
+                          ),
+                        reduced ? 80 : 220,
+                      );
+                    }
+                  }}
+                />
+                <div className="swipe-progress">
+                  <span style={{ width: `${swipeProgress}%` }} />
+                </div>
+                <small>{swipeProgress >= 96 ? "Karte gelesen" : "Nach rechts ziehen"}</small>
+              </div>
             )}
 
             {payment.stage === "face" && (

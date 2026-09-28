@@ -1,0 +1,18 @@
+import {build} from 'esbuild';
+import {resolve} from 'node:path';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const src=resolve(import.meta.dirname,'..'),out=resolve(src,'release');
+await mkdir(out,{recursive:true});
+const result=await build({absWorkingDir:src,entryPoints:['main.tsx'],bundle:true,write:false,outfile:'game.js',format:'iife',platform:'browser',target:'es2022',minify:true,define:{'process.env.NODE_ENV':'"production"'},loader:{'.woff':'dataurl','.woff2':'dataurl'}});
+const js=result.outputFiles.find(f=>f.path.endsWith('.js')).text.replace(/<\/script/gi,'<\\/script');const css=result.outputFiles.find(f=>f.path.endsWith('.css')).text;
+const html=(await readFile(src+'/index.html','utf8')).replace('</head>',()=>`<style>${css}</style></head>`).replace('<script type="module" src="/main.tsx"></script>',()=>`<script>${js}</script>`);
+await writeFile(out+'/index.html',html);
+const assets={};
+for(const [name,mime] of [['sw.js','application/javascript'],['manifest.webmanifest','application/manifest+json'],['icon-192.png','image/png'],['icon-512.png','image/png']])assets['/'+name]={mime,data:(await readFile(src+'/public/'+name)).toString('base64')};
+const wrapper=`import api from './worker.ts';export {EmpireRoom} from './worker.ts';const html=${JSON.stringify(html)};const assets=${JSON.stringify(assets)};
+export default {async fetch(request,env,ctx){const u=new URL(request.url);if(assets[u.pathname]){const asset=assets[u.pathname];return new Response(request.method==='HEAD'?null:Uint8Array.from(atob(asset.data),c=>c.charCodeAt(0)),{headers:{'Content-Type':asset.mime,'Cache-Control':'no-cache'}})}if(u.pathname==='/health'||u.pathname.startsWith('/api/')||u.pathname.startsWith('/room/'))return api.fetch(request,{...env,ALLOWED_ORIGINS:u.origin},ctx);if(request.method!=='GET'&&request.method!=='HEAD')return new Response('Method Not Allowed',{status:405});if(u.pathname!=='/'&&u.pathname!=='/index.html')return new Response('Not found',{status:404});return new Response(request.method==='HEAD'?null:html,{headers:{'Content-Type':'text/html;charset=utf-8','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'}})}};`;
+await build({stdin:{contents:wrapper,resolveDir:src,sourcefile:'entry.ts'},bundle:true,format:'esm',platform:'neutral',target:'es2022',minify:true,external:['node:crypto'],outfile:out+'/worker.js'});
+const licenses=await readFile(src+'/LICENSES.txt','utf8');
+await writeFile(out+'/worker.js','/*\n'+licenses.replaceAll('*/','* /')+'\n*/\n'+await readFile(out+'/worker.js','utf8'));
+const config=JSON.parse(await readFile(src+'/wrangler.jsonc','utf8'));config.main='worker.js';delete config.vars;await writeFile(out+'/wrangler.json',JSON.stringify(config,null,2));
+console.log('Built V6: game and server bundled.');

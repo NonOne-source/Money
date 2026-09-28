@@ -1,0 +1,47 @@
+{
+  "name": "world-empire",
+  "private": true,
+  "version": "6.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:worker": "wrangler dev",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "node --import tsx --test tests/game.test.ts tests/upgrades.test.ts tests/v5.test.ts tests/advisors.test.ts tests/auth-flows.test.ts",
+    "test:multiplayer": "node --test tests/multiplayer.test.mjs tests/accounts.test.mjs tests/auth.test.mjs",
+    "deploy:worker": "wrangler deploy",
+    "build:worker": "node scripts/bundle-worker.mjs",
+    "configure:hosting": "node scripts/configure-hosting.mjs",
+    "build:release": "node scripts/build-release.mjs"
+  },
+  "dependencies": {
+    "@fontsource/dm-sans": "5.3.0",
+    "@fontsource/manrope": "5.3.0",
+    "lucide-react": "1.47.0",
+    "qrcode": "1.5.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.186.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20260920.1",
+    "@types/node": "26.6.2",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@types/three": "0.186.0",
+    "@types/topojson-client": "3.1.5",
+    "@vitejs/plugin-react": "4.7.0",
+    "esbuild": "0.28.2",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "6.4.3",
+    "wrangler": "4.135.0"
+  },
+  "engines": {
+    "node": ">=22.17.0"
+  }
+}

@@ -4767,7 +4767,7 @@ lucide-react/dist/esm/lucide-react.mjs:
     var overlay=document.createElement("div");overlay.className="we-pay-backdrop";
     overlay.innerHTML='<div class="we-pay-modal"><button class="we-pay-close" aria-label="Schließen">×</button>'+
       '<div class="we-pay-head"><small>WORLD EMPIRE PAY</small><h2>'+title+'</h2><strong>'+amount.toLocaleString("de-DE")+' €</strong></div>'+
-      '<div class="bank-card empire-payment-card card-'+t.key+'">'+cardMarkup(player.name,wealth)+'</div>'+
+      '<div class="bank-card empire-payment-card card-'+t.key+'" data-we-card="1">'+cardMarkup(player.name,wealth)+'</div>'+
       '<div class="we-pay-stage"><div class="we-pay-terminal"><div class="we-pay-screen">ZAHLUNGSART WÄHLEN</div><div class="we-pay-slot"></div><small>Virtuelle Spielkarte · keine echte Zahlung</small></div><div class="we-pay-methods"><button class="we-pay-action we-face-button">Face ID</button><button class="we-pay-action secondary we-swipe-button">Karte durchziehen</button></div></div></div>';
     document.body.appendChild(overlay);
     function close(){overlay.remove()}

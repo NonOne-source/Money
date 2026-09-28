@@ -4703,7 +4703,7 @@ lucide-react/dist/esm/lucide-react.mjs:
 .we-pay-terminal{margin-top:17px;background:linear-gradient(165deg,#29333a,#151c21);border:1px solid #ffffff12;border-radius:18px;padding:18px}
 .we-pay-screen{display:grid;place-items:center;height:52px;border-radius:8px;background:#a5c3a51c;border:1px solid #b6d4b72b;color:#b8d0bb;font-size:9px;letter-spacing:2px}
 .we-pay-slot{width:78%;height:8px;border-radius:8px;margin:19px auto 13px;background:#050708;box-shadow:inset 0 2px 5px #000}.we-pay-terminal small{display:block;text-align:center;font-size:7px;color:#758896}
-.we-pay-action{width:100%;min-height:48px;margin-top:15px;border-radius:9px;background:#c5a568;color:#10202a;font-weight:800}
+.we-pay-action{width:100%;min-height:48px;margin-top:15px;border-radius:9px;background:#c5a568;color:#10202a;font-weight:800}.we-pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.we-pay-methods .we-pay-action{margin-top:0}.we-pay-action.secondary{background:#ffffff0b;color:#dfe8ec;border:1px solid #ffffff18}.we-swipe{display:grid;gap:13px;text-align:center;margin-top:17px}.we-swipe-terminal{padding:18px;border-radius:18px;background:linear-gradient(165deg,#29333a,#151c21);border:1px solid #ffffff12}.we-swipe-slot{position:relative;height:92px;overflow:hidden;border-radius:12px;background:#080b0d;border:1px solid #ffffff10;box-shadow:inset 0 4px 12px #0008}.we-swipe-slot:after{content:"";position:absolute;left:12%;right:12%;top:42px;height:8px;border-radius:8px;background:#010203}.we-swipe-card{position:absolute;z-index:2;left:-46%;top:19px;width:46%;height:54px;border-radius:9px;padding:9px 11px;text-align:left;background:linear-gradient(145deg,#20262c,#080a0c);border:1px solid #858c9255;box-shadow:0 8px 20px #0008;transition:transform .08s linear}.we-swipe-card span{display:block;font-size:5px;letter-spacing:1px}.we-swipe-card b{display:block;margin-top:14px;font-size:8px;letter-spacing:1px}.we-swipe input{width:100%;accent-color:#c8aa70}.we-swipe small{font-size:8px;color:#8599a7}.we-swipe-progress{height:5px;border-radius:999px;overflow:hidden;background:#ffffff0c}.we-swipe-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#9b8050,#d9bf87);transition:width .08s linear}@media(max-width:520px){.we-pay-methods{grid-template-columns:1fr}}
 .we-face,.we-approved{min-height:185px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.we-face-box{width:90px;height:90px;border:3px solid #d5c69b;border-radius:22px;display:grid;place-items:center;font-size:35px;color:#d5c69b;animation:weFace 1s ease-in-out infinite}.we-face b,.we-approved b{font-size:18px;margin-top:14px}.we-face small,.we-approved small{font-size:9px;color:#8599a7;margin-top:5px}.we-approved-icon{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:#5aa67b1c;border:1px solid #6aba8e55;color:#86d6aa;font-size:34px}
 @keyframes weFace{0%,100%{transform:scale(.96);opacity:.68}50%{transform:scale(1.04);opacity:1}}
 </style><script>
@@ -4768,22 +4768,31 @@ lucide-react/dist/esm/lucide-react.mjs:
     overlay.innerHTML='<div class="we-pay-modal"><button class="we-pay-close" aria-label="Schließen">×</button>'+
       '<div class="we-pay-head"><small>WORLD EMPIRE PAY</small><h2>'+title+'</h2><strong>'+amount.toLocaleString("de-DE")+' €</strong></div>'+
       '<div class="bank-card empire-payment-card card-'+t.key+'">'+cardMarkup(player.name,wealth)+'</div>'+
-      '<div class="we-pay-stage"><div class="we-pay-terminal"><div class="we-pay-screen">KARTE BEREIT</div><div class="we-pay-slot"></div><small>Virtuelle Spielkarte · keine echte Zahlung</small></div><button class="we-pay-action">Mit Face ID bestätigen</button></div></div>';
+      '<div class="we-pay-stage"><div class="we-pay-terminal"><div class="we-pay-screen">ZAHLUNGSART WÄHLEN</div><div class="we-pay-slot"></div><small>Virtuelle Spielkarte · keine echte Zahlung</small></div><div class="we-pay-methods"><button class="we-pay-action we-face-button">Face ID</button><button class="we-pay-action secondary we-swipe-button">Karte durchziehen</button></div></div></div>';
     document.body.appendChild(overlay);
     function close(){overlay.remove()}
     overlay.querySelector(".we-pay-close").addEventListener("click",close);
     overlay.addEventListener("click",function(e){if(e.target===overlay)close()});
-    overlay.querySelector(".we-pay-action").addEventListener("click",function(){
-      var stage=overlay.querySelector(".we-pay-stage");
+    var stage=overlay.querySelector(".we-pay-stage");
+    function finish(){
+      overlay.querySelector(".we-pay-close").style.visibility="";
+      stage.innerHTML='<div class="we-approved"><div class="we-approved-icon">✓</div><b>Bestätigt</b><small>'+amount.toLocaleString("de-DE")+' € · virtuelle Spielzahlung</small><button class="we-pay-action">Kauf abschließen</button></div>';
+      stage.querySelector(".we-pay-action").addEventListener("click",function(){
+        close();btn.setAttribute("data-we-bypass","1");btn.click();setTimeout(function(){btn.removeAttribute("data-we-bypass")},0)
+      })
+    }
+    overlay.querySelector(".we-face-button").addEventListener("click",function(){
       overlay.querySelector(".we-pay-close").style.visibility="hidden";
       stage.innerHTML='<div class="we-face"><div class="we-face-box">⌁</div><b>Face ID</b><small>Spielzahlung wird bestätigt …</small></div>';
-      setTimeout(function(){
-        overlay.querySelector(".we-pay-close").style.visibility="";
-        stage.innerHTML='<div class="we-approved"><div class="we-approved-icon">✓</div><b>Bestätigt</b><small>'+amount.toLocaleString("de-DE")+' € · virtuelle Spielzahlung</small><button class="we-pay-action">Kauf abschließen</button></div>';
-        stage.querySelector(".we-pay-action").addEventListener("click",function(){
-          close();btn.setAttribute("data-we-bypass","1");btn.click();setTimeout(function(){btn.removeAttribute("data-we-bypass")},0)
-        })
-      },850)
+      setTimeout(finish,850)
+    });
+    overlay.querySelector(".we-swipe-button").addEventListener("click",function(){
+      stage.innerHTML='<div class="we-swipe"><div class="we-swipe-terminal"><div class="we-swipe-slot"><div class="we-swipe-card"><span>WORLD EMPIRE</span><b>•••• '+last4(player.name)+'</b></div></div><small>Karte vollständig nach rechts durchziehen.</small></div><input type="range" min="0" max="100" value="0" aria-label="Karte durch Lesegerät ziehen"><div class="we-swipe-progress"><span></span></div><small class="we-swipe-label">Nach rechts ziehen</small></div>';
+      var range=stage.querySelector("input"),card=stage.querySelector(".we-swipe-card"),bar=stage.querySelector(".we-swipe-progress span"),label=stage.querySelector(".we-swipe-label"),done=false;
+      range.addEventListener("input",function(){
+        var v=Number(range.value)||0;card.style.transform="translateX("+Math.min(100,v)+"%) rotate(-4deg)";bar.style.width=v+"%";
+        if(v>=96&&!done){done=true;label.textContent="Karte gelesen";range.disabled=true;setTimeout(finish,220)}
+      })
     })
   }
   document.addEventListener("click",function(e){

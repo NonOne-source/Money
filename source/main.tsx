@@ -53,7 +53,7 @@ import {Career, Cosmetics, LobbyExtras, PublicRooms, ResultsDetails, Achievement
 import {gameProperties} from "./custom.ts";
 import { Board, CityArt } from "./Board.tsx";
 import { Dice } from "./Dice.tsx";
-import { Phone, type AppId } from "./Phone.tsx";
+import { EmpirePaymentCard, Phone, type AppId } from "./Phone.tsx";
 import { sounds } from "./sound.ts";
 import "@fontsource/manrope/latin-400.css";
 import "@fontsource/manrope/latin-600.css";
@@ -96,7 +96,12 @@ function App() {
     [phone, setPhone] = useState<AppId | null>(null),
     [modal, setModal] = useState<"rules" | "invite" | "settings" | null>(null),
     [selected, setSelected] = useState<string | null>(null),
-    [view, setView] = useState<"board" | "globe">("board");
+    [view, setView] = useState<"board" | "globe">("board"),
+    [payment, setPayment] = useState<null | {
+      city: string;
+      amount: number;
+      stage: "ready" | "face" | "approved";
+    }>(null);
   useEffect(()=>{const logout=()=>{setConnection(null);setModal(null);setPhone(null);};window.addEventListener('we-logout',logout);return()=>window.removeEventListener('we-logout',logout);},[]);
   const [now, setNow] = useState(Date.now()),
     [sound, setSound] = useState(
@@ -301,7 +306,14 @@ function App() {
                     <button
                       className="button gold"
                       disabled={locked || p.money < (landed?.price || 0)}
-                      onClick={() => send({ type: "buy" })}
+                      onClick={() =>
+                        landed &&
+                        setPayment({
+                          city: BOARD[cp?.position || 0].id,
+                          amount: landed.price,
+                          stage: "ready",
+                        })
+                      }
                     >
                       Kaufen · {money(landed?.price || 0)}
                     </button>
@@ -1078,6 +1090,94 @@ function App() {
           send={send}
           now={game.manualPause||now}
         />
+      )}
+      {payment && !spectator && (
+        <Dialog
+          title="Kauf autorisieren"
+          onClose={() => {
+            if (payment.stage !== "face") setPayment(null);
+          }}
+        >
+          <div className="payment-flow">
+            <div className="payment-flow-head">
+              <span className="eyebrow">WORLD EMPIRE PAY</span>
+              <h2>{PROPERTIES[payment.city]?.name || "Grundstück"}</h2>
+              <strong>{money(payment.amount)}</strong>
+            </div>
+
+            <EmpirePaymentCard
+              name={p.name}
+              wealth={netWorth(game, p)}
+              seed={you}
+              now={now}
+              compact
+            />
+
+            {payment.stage === "ready" && (
+              <>
+                <div className="payment-terminal">
+                  <span className="terminal-screen">KARTE BEREIT</span>
+                  <div className="terminal-slot" />
+                  <small>Virtuelle Spielkarte · keine echte Zahlung</small>
+                </div>
+                <button
+                  className="button gold full face-id-button"
+                  onClick={() => {
+                    setPayment({ ...payment, stage: "face" });
+                    window.setTimeout(
+                      () =>
+                        setPayment((x) =>
+                          x ? { ...x, stage: "approved" } : x,
+                        ),
+                      reduced ? 120 : 850,
+                    );
+                  }}
+                >
+                  <ShieldCheck size={17} /> Mit Face ID bestätigen
+                </button>
+              </>
+            )}
+
+            {payment.stage === "face" && (
+              <div className="face-id-stage" role="status" aria-live="polite">
+                <div className="face-id-frame">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <ShieldCheck size={40} />
+                </div>
+                <b>Face ID</b>
+                <small>Spielzahlung wird bestätigt …</small>
+              </div>
+            )}
+
+            {payment.stage === "approved" && (
+              <div className="payment-approved">
+                <span className="payment-check"><Check size={31} /></span>
+                <h3>Bestätigt</h3>
+                <p>
+                  {money(payment.amount)} für {PROPERTIES[payment.city]?.name || "das Grundstück"}.
+                </p>
+                <button
+                  className="button gold full"
+                  disabled={
+                    locked ||
+                    game.turnPhase !== "purchase" ||
+                    BOARD[cp?.position || 0].id !== payment.city ||
+                    p.money < payment.amount
+                  }
+                  onClick={() => {
+                    send({ type: "buy" });
+                    setPayment(null);
+                  }}
+                >
+                  Kauf abschließen
+                </button>
+              </div>
+            )}
+          </div>
+        </Dialog>
       )}
       {modal === "rules" && <Rules onClose={() => setModal(null)} />}
       {modal === "invite" && (

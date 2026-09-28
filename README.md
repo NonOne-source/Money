@@ -75,3 +75,18 @@ TEST_API=http://127.0.0.1:8798 npm run test:multiplayer
 Die automatisch ausgeführten Prüfungen umfassen 54 Regel-/Beratungstests, zwei Authentifizierungsabläufe mit simulierten Google-/Mailantworten sowie sieben lokale Server-/WebSocket-Integrationstests. Browserprüfung: Registrierung, Cookie-Sitzung im Multiplayer, Handelsfarben, Gruppenvergleich, Besitzdialog, Schuldenhilfe, Schnellgebote, iPad-Hoch-/Querformat. Kein Test auf physischem iPad/Safari und kein Produktions-Lasttest.
 
 Lizenzhinweise stehen in `source/LICENSES.txt` und im gebündelten Worker.
+
+
+## Vermögenskarten & Spielzahlung
+
+Das Ingame-Banking besitzt jetzt vermögensabhängige Spielkarten. Die Schwellen sind bewusst niedriger gesetzt:
+
+- unter 1.500 €: Sparkasse Classic
+- ab 1.500 €: Green
+- ab 2.500 €: Gold
+- ab 4.000 €: Platinum
+- ab 6.000 €: Centurion
+
+Die Karte zeigt den Spielernamen, ein automatisch berechnetes Ablaufdatum und ausschließlich eine zensierte, spielinterne Kartennummer. Beim Grundstückskauf öffnet sich vor dem eigentlichen Kauf eine World-Empire-Pay-Ansicht mit Karte, virtuellem Terminal und einer simulierten Face-ID-Bestätigung. Erst „Kauf abschließen“ sendet den vorhandenen servergeprüften Kaufzug. Es werden keine echten Zahlungsdaten verarbeitet.
+
+Die neue Kartenansicht und der Zahlungsablauf sind sowohl im Entwicklungs-Source als auch in der Root-`worker.js` für das Cloudflare-Deployment enthalten.
